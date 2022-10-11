@@ -1,0 +1,33 @@
+.title-font {
+  font-family: Inter;
+  font-size: 32px;
+  line-height: 48px;
+  font-weight: 800;
+  color: #171a1fff;
+}
+.small-medium-font {
+  font-family: Inter;
+  font-size: 20px;
+  line-height: 30px;
+  color: #323842ff;
+  font-weight: 600;
+}
+.normal-font {
+  font-family: Inter;
+  font-size: 14px;
+  line-height: 22px;
+  color: #171a1fff;
+}
+.border-wrap {
+  width: 36px;
+  height: 36px;
+  background: #ffffffff;
+  border-radius: 50%;
+  border-width: 1px;
+  border-color: #7d6ce2ff;
+  border-style: solid;
+  font-family: Inter;
+  font-size: 14px;
+  line-height: 22px;
+  color: #171a1fff;
+}
