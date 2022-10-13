@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { BrowserRouter, Redirect, Switch } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "@/redux/store";
-import "@/assets/styles/index.css";
+import "./assets/styles/index.css";
 
 import "@/i18n";
 import { Route } from "react-router";

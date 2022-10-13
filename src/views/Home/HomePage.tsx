@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { ERC721Interface } from "@/ABI/ERC721";
@@ -19,6 +19,7 @@ import {
 import { publicProvider } from "wagmi/providers/public";
 import "@rainbow-me/rainbowkit/styles.css";
 import { ethers } from "ethers";
+import { Modal } from "@/components/Common/Modal";
 const { chains, provider } = configureChains(
   [chain.goerli],
   [publicProvider()]
@@ -33,6 +34,7 @@ const wagmiClient = createClient({
   provider,
 });
 const HomeWrap = () => {
+  const [visible, setVisible] = useState(false);
   const { data } = useContractRead({
     addressOrName: "0xE9f75B380C751C070bB0894302D6ecE19B85f2A6",
     contractInterface: ERC721Interface,
@@ -47,7 +49,8 @@ const HomeWrap = () => {
         <div className="flex justify-center items-center mt-8 title-font">
           NFT PASS
         </div>
-        <Card />
+        <Card setVisible={setVisible} />
+        <Modal visible={visible} setVisible={setVisible} />
       </div>
     </RainbowKitProvider>
   );
