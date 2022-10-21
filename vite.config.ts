@@ -2,7 +2,7 @@
  * @Author: byeond009 1249413181@qq.com
  * @Date: 2022-10-10 11:12:33
  * @LastEditors: byeond009 1249413181@qq.com
- * @LastEditTime: 2022-10-21 14:12:30
+ * @LastEditTime: 2022-10-21 16:33:06
  * @FilePath: /vite-react-ts/vite.config.ts
  * @Description:
  *
@@ -33,7 +33,7 @@ export default defineConfig({
   publicDir: "public",
   server: {
     proxy: {
-      "/api": {
+      "/api1": {
         target: "https://61618mh025.zicp.fun",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
