@@ -135,12 +135,15 @@ export const Card = ({ setVisible, tokenId }: Props) => {
                     message: "Open DAO SPACE with token " + tokenId,
                   });
                   console.log(sig);
-                  instance.post("/v1/signature_check", {
-                    signature: sig,
-                    address: address,
-                    text: "Open DAO SPACE with token " + tokenId,
-                    pass_id: tokenId,
-                  });
+                  let formdata = new FormData();
+                  formdata.append("signature", sig);
+                  formdata.append("address", address);
+                  formdata.append(
+                    "text",
+                    "Open DAO SPACE with token " + tokenId
+                  );
+                  formdata.append("pass_id", tokenId);
+                  instance.post("/v1/signature_check", formdata);
                   setVisible(true);
                 }}
               >
