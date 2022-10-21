@@ -2,6 +2,14 @@ import React, { useState } from "react";
 import { Gap } from "@/components";
 import ClickAwayListener from "@mui/base/ClickAwayListener";
 import styled from "styled-components";
+import { signMessage } from "@wagmi/core";
+import axios from "axios";
+import { useAccount } from "wagmi";
+const instance = axios.create({
+  baseURL: "/api",
+  timeout: 300000,
+  headers: { "X-Custom-Header": "foobar" },
+});
 const Divider = styled.div`
   width: 100%;
   border-width: 1px;
@@ -46,9 +54,11 @@ const Button = styled.div`
 `;
 interface Props {
   setVisible: Fuction;
+  tokenId: number;
 }
-export const Card = ({ setVisible }: Props) => {
+export const Card = ({ setVisible, tokenId }: Props) => {
   const [open, setOpen] = useState(false);
+  const { address } = useAccount();
   return (
     <ClickAwayListener
       onClickAway={() => {
@@ -78,7 +88,7 @@ export const Card = ({ setVisible }: Props) => {
         ></img>
         <div className="flex justify-between w-full px-3 py-2 items-center">
           <div className="flex flex-col">
-            <div className="small-medium-font">DAO SPACE</div>
+            <div className="small-medium-font">DAO SPACE #{tokenId}</div>
             <Gap height={3} />
             <div className="flex">
               <img src="./position.png" width="20px" height="20px" />
@@ -119,7 +129,23 @@ export const Card = ({ setVisible }: Props) => {
             <Divider />
             <Gap height={24} />
             <div className="flex w-full justify-end">
-              <Button onClick={() => setVisible(true)}>开门</Button>
+              <Button
+                onClick={async () => {
+                  const sig = await signMessage({
+                    message: "Open DAO SPACE with token " + tokenId,
+                  });
+                  console.log(sig);
+                  instance.post("/v1/signature_check", {
+                    signature: sig,
+                    address: address,
+                    text: "Open DAO SPACE with token " + tokenId,
+                    pass_id: tokenId,
+                  });
+                  setVisible(true);
+                }}
+              >
+                开门
+              </Button>
             </div>
           </div>
         ) : (

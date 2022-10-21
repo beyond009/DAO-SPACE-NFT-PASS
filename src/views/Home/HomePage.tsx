@@ -2,13 +2,14 @@
  * @Author: byeond009 1249413181@qq.com
  * @Date: 2022-10-10 11:12:33
  * @LastEditors: byeond009 1249413181@qq.com
- * @LastEditTime: 2022-10-20 22:07:50
+ * @LastEditTime: 2022-10-21 14:40:28
  * @FilePath: /vite-react-ts/src/views/Home/HomePage.tsx
  * @Description:
  *
  * Copyright (c) 2022 by byeond009 1249413181@qq.com, All Rights Reserved.
  */
-import React, { useState } from "react";
+
+import React, { useState, useEffect } from "react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { ERC721Interface } from "@/ABI/ERC721";
@@ -26,6 +27,7 @@ import {
   useContractWrite,
   useProvider,
   WagmiConfig,
+  useSignMessage,
   Chain,
 } from "wagmi";
 import { publicProvider } from "wagmi/providers/public";
@@ -56,24 +58,54 @@ const { chains, provider } = configureChains(
     }),
   ]
 );
-const { connectors } = getDefaultWallets({
-  appName: "DAO SPACE NFT PASS",
-  chains,
-});
-const wagmiClient = createClient({
-  autoConnect: true,
-  connectors,
-  provider,
-});
-const HomeWrap = () => {
+const HomeWrap = (): JSX.Element => {
+  const { address, isConnecting, isDisconnected, isConnected } = useAccount();
   const [visible, setVisible] = useState(false);
-  const { data } = useContractRead({
-    addressOrName: "0xce6685530FbA7cC34538149B2278e213Ce73FcDa",
-    contractInterface: ERC721Interface,
-    functionName: "balanceOf",
-    args: "0x4774c2140f54dca848781c391e7f695a5Ad38b2b",
+  const [tokenIds, setTokenIds] = useState([]);
+  const provider = useProvider();
+  const signMessage = useSignMessage({
+    message: "gm wagmi frens",
+    onSuccess(data) {
+      console.log("Success", data);
+    },
   });
-  console.log(Number(data));
+
+  const balanceOf = () => {
+    const { data, isFetching } = useContractRead({
+      addressOrName: "0xce6685530FbA7cC34538149B2278e213Ce73FcDa",
+      contractInterface: ERC721Interface,
+      functionName: "balanceOf",
+      args: "0x1c9CF0E5473914A0e705e8Cf0BdD3EfbbFe17E48",
+    });
+    return data;
+  };
+  const fetchNFT = async (address: string) => {
+    console.log(address);
+    const NFT = new ethers.Contract(
+      "0xce6685530fba7cc34538149b2278e213ce73fcda",
+      ERC721Interface,
+      provider
+    );
+    const balance = await NFT.balanceOf(
+      "0x1c9CF0E5473914A0e705e8Cf0BdD3EfbbFe17E48"
+    );
+    console.log(Number(balance));
+    const tmpTokenIds: any = [];
+    for (let i = 0; i < balance; i++) {
+      const id = await NFT.tokenOfOwnerByIndex(
+        "0x1c9CF0E5473914A0e705e8Cf0BdD3EfbbFe17E48",
+        i
+      );
+      tmpTokenIds.push(id);
+    }
+    setTokenIds(tmpTokenIds);
+  };
+  useEffect(() => {
+    console.log(isConnected, address);
+    if (isConnected && address) {
+      fetchNFT(address);
+    }
+  }, [isConnected]);
   return (
     <RainbowKitProvider chains={chains}>
       <div className="flex justify-center items-center w-full flex-col p-6">
@@ -81,18 +113,13 @@ const HomeWrap = () => {
         <div className="flex justify-center items-center mt-8 title-font">
           NFT PASS
         </div>
-        <Card setVisible={setVisible} />
+        {tokenIds.map((v, k) => {
+          return <Card setVisible={setVisible} key={k} tokenId={Number(v)} />;
+        })}
         <Modal visible={visible} setVisible={setVisible} />
       </div>
     </RainbowKitProvider>
   );
 };
-const Home = (): JSX.Element => {
-  return (
-    <WagmiConfig client={wagmiClient}>
-      <HomeWrap />
-    </WagmiConfig>
-  );
-};
 
-export default Home;
+export default HomeWrap;
