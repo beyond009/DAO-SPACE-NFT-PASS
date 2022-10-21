@@ -93,20 +93,21 @@ export const Modal = ({ visible, setVisible, message }: Props) => {
         className="flex flex-col items-center"
         style={{ width: "300px", height: "auto" }}
       >
+        <Gap height={18} />
         <QRCode
           value={message} // 生成二维码的内容
-          size={300} // 二维码的大小
+          size={270} // 二维码的大小
           fgColor="#000000" // 二维码的颜色
         />
-        <Gap height={10} />
+        <Gap height={30} />
         <ValueFont>感谢使用DAO Space NFT Pass</ValueFont>
         <ValueFont>您为66解锁了第72个假期 🚀</ValueFont>
         <ValueFont>祝你拥有美好的一天 👾</ValueFont>
         <Gap height={10} />
-        <div className="flex">
+        <div className="flex justify-center">
           <GrayButton onClick={() => setVisible(false)}>打不开？</GrayButton>
-          <Gap width={16} />
-          <Button onClick={() => setVisible(false)}>确认</Button>
+          {/* <Gap width={16} /> */}
+          {/* <Button onClick={() => setVisible(false)}>确认</Button> */}
         </div>
         <Gap height={20} />
       </div>
