@@ -2,7 +2,7 @@
  * @Author: byeond009 1249413181@qq.com
  * @Date: 2022-10-10 11:12:33
  * @LastEditors: byeond009 1249413181@qq.com
- * @LastEditTime: 2022-10-21 14:40:28
+ * @LastEditTime: 2022-10-21 15:38:04
  * @FilePath: /vite-react-ts/src/views/Home/HomePage.tsx
  * @Description:
  *
@@ -86,18 +86,14 @@ const HomeWrap = (): JSX.Element => {
       ERC721Interface,
       provider
     );
-    const balance = await NFT.balanceOf(
-      "0x1c9CF0E5473914A0e705e8Cf0BdD3EfbbFe17E48"
-    );
+    const balance = await NFT.balanceOf(address);
     console.log(Number(balance));
     const tmpTokenIds: any = [];
     for (let i = 0; i < balance; i++) {
-      const id = await NFT.tokenOfOwnerByIndex(
-        "0x1c9CF0E5473914A0e705e8Cf0BdD3EfbbFe17E48",
-        i
-      );
+      const id = await NFT.tokenOfOwnerByIndex(address, i);
       tmpTokenIds.push(id);
     }
+
     setTokenIds(tmpTokenIds);
   };
   useEffect(() => {
@@ -114,9 +110,8 @@ const HomeWrap = (): JSX.Element => {
           NFT PASS
         </div>
         {tokenIds.map((v, k) => {
-          return <Card setVisible={setVisible} key={k} tokenId={Number(v)} />;
+          return <Card key={k} tokenId={Number(v)} />;
         })}
-        <Modal visible={visible} setVisible={setVisible} />
       </div>
     </RainbowKitProvider>
   );

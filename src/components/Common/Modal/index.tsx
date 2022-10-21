@@ -5,6 +5,7 @@ import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
 import styled from "styled-components";
 import { Gap } from "..";
+import QRCode from "qrcode.react";
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
     children: React.ReactElement<any, any>;
@@ -78,8 +79,9 @@ const GrayButton = styled.div`
 interface Props {
   visible: boolean;
   setVisible: Fuction;
+  message: string;
 }
-export const Modal = ({ visible, setVisible }: Props) => {
+export const Modal = ({ visible, setVisible, message }: Props) => {
   return (
     <Dialog
       open={visible}
@@ -87,20 +89,26 @@ export const Modal = ({ visible, setVisible }: Props) => {
       keepMounted
       onClose={() => setVisible(false)}
     >
-      <div className="flex flex-col items-center" style={{ width: "300px" }}>
-        <Gap height={30} />
-        <TitleFont>开门成功</TitleFont>
-        <Gap height={6} />
+      <div
+        className="flex flex-col items-center"
+        style={{ width: "300px", height: "auto" }}
+      >
+        <QRCode
+          value={message} // 生成二维码的内容
+          size={300} // 二维码的大小
+          fgColor="#000000" // 二维码的颜色
+        />
+        <Gap height={10} />
         <ValueFont>感谢使用DAO Space NFT Pass</ValueFont>
         <ValueFont>您为66解锁了第72个假期 🚀</ValueFont>
         <ValueFont>祝你拥有美好的一天 👾</ValueFont>
-        <Gap height={28} />
+        <Gap height={10} />
         <div className="flex">
           <GrayButton onClick={() => setVisible(false)}>打不开？</GrayButton>
           <Gap width={16} />
           <Button onClick={() => setVisible(false)}>确认</Button>
         </div>
-        <Gap height={24} />
+        <Gap height={20} />
       </div>
     </Dialog>
   );

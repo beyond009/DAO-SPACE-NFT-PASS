@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Gap } from "@/components";
 import ClickAwayListener from "@mui/base/ClickAwayListener";
 import styled from "styled-components";
 import { signMessage } from "@wagmi/core";
 import axios from "axios";
-import { useAccount } from "wagmi";
+import { useAccount, useContractRead } from "wagmi";
+import { ERC721Interface } from "@/ABI/ERC721";
+import { Modal } from "@/components/Common/Modal";
 const instance = axios.create({
   baseURL: "/api",
   timeout: 300000,
@@ -53,12 +55,35 @@ const Button = styled.div`
   }
 `;
 interface Props {
-  setVisible: Fuction;
   tokenId: number;
 }
-export const Card = ({ setVisible, tokenId }: Props) => {
+export const Card = ({ tokenId }: Props) => {
   const [open, setOpen] = useState(false);
   const { address } = useAccount();
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
+  const [visible, setVisible] = useState(false);
+  const [message, setMessage] = useState("");
+  const activated = useContractRead({
+    addressOrName: "0xce6685530FbA7cC34538149B2278e213Ce73FcDa",
+    contractInterface: ERC721Interface,
+    functionName: "activated",
+    args: tokenId,
+  });
+  const expires = useContractRead({
+    addressOrName: "0xce6685530FbA7cC34538149B2278e213Ce73FcDa",
+    contractInterface: ERC721Interface,
+    functionName: "expires",
+    args: tokenId,
+  });
+  console.log(Number(activated.data), Number(expires.data));
+  useEffect(() => {
+    if (activated.data && expires.data) {
+      setStartDate(new Date(Number(activated.data) * 1000));
+      setEndDate(new Date(Number(expires.data) * 1000));
+    }
+  }, [activated.data, expires.data]);
+  console.log(startDate, endDate);
   return (
     <ClickAwayListener
       onClickAway={() => {
@@ -115,14 +140,20 @@ export const Card = ({ setVisible, tokenId }: Props) => {
                 <ValueFont>有效</ValueFont>
               </div>
               <div className="flex flex-col">
-                <TitleFont>卡面</TitleFont>
-                <Gap height={8} />
-                <ValueFont>NFT Pass研发组</ValueFont>
-              </div>
-              <div className="flex flex-col">
                 <TitleFont>开卡时间</TitleFont>
                 <Gap height={8} />
-                <ValueFont>2022/10/13</ValueFont>
+                <ValueFont>
+                  {" "}
+                  {startDate ? `${startDate.toLocaleDateString()}` : ""}
+                </ValueFont>
+              </div>
+              <div className="flex flex-col">
+                <TitleFont>有效时间</TitleFont>
+                <Gap height={8} />
+                <ValueFont>
+                  {" "}
+                  {endDate ? `${endDate.toLocaleDateString()}` : ""}
+                </ValueFont>
               </div>
             </div>
             <Gap height={18} />
@@ -143,7 +174,12 @@ export const Card = ({ setVisible, tokenId }: Props) => {
                     "Open DAO SPACE with token " + tokenId
                   );
                   formdata.append("pass_id", tokenId);
-                  instance.post("/v1/signature_check", formdata);
+                  const res = await instance.post(
+                    "/v1/signature_check",
+                    formdata
+                  );
+                  console.log(res, "aaa");
+                  setMessage(res.data);
                   setVisible(true);
                 }}
               >
@@ -154,6 +190,7 @@ export const Card = ({ setVisible, tokenId }: Props) => {
         ) : (
           ""
         )}
+        <Modal visible={visible} setVisible={setVisible} message={message} />
       </div>
     </ClickAwayListener>
   );
