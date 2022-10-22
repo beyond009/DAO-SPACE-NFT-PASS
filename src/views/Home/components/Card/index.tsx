@@ -8,7 +8,7 @@ import { useAccount, useContractRead } from "wagmi";
 import { ERC721Interface } from "@/ABI/ERC721";
 import { Modal } from "@/components/Common/Modal";
 const instance = axios.create({
-  baseURL: "https://61618mh025.zicp.fun",
+  baseURL: "https://api.daospace.one",
   timeout: 300000,
   headers: { "X-Custom-Header": "foobar" },
 });
