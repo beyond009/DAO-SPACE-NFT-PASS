@@ -8,7 +8,8 @@ import { useAccount, useContractRead } from "wagmi";
 import { ERC721Interface } from "@/ABI/ERC721";
 import { Modal } from "@/components/Common/Modal";
 const instance = axios.create({
-  baseURL: "/api1",
+  // baseURL: "/api1",
+  baseURL: "https://61618mh025.zicp.fun/",
   timeout: 300000,
   headers: { "X-Custom-Header": "foobar" },
 });
@@ -99,7 +100,7 @@ export const Card = ({ tokenId }: Props) => {
           height: open ? "489px" : "240px",
         }}
       >
-        <img
+        {/* <img
           src="./nft.jpg"
           onClick={(e) => {
             e.stopPropagation();
@@ -110,7 +111,32 @@ export const Card = ({ tokenId }: Props) => {
             width: "100%",
             borderRadius: "8px 8px 0px 0px",
           }}
-        ></img>
+        ></img> */}
+        <video
+          // ref={refVideoCallback}
+          // onEnded={openEnd}
+          onClick={(e) => {
+            e.stopPropagation();
+            setOpen(!open);
+          }}
+          style={{
+            height: "160px",
+            width: "100%",
+            objectFit: "fill",
+            borderRadius: "8px 8px 0px 0px",
+            cursor: "pointer",
+          }}
+          id="myVideo"
+          loop
+          muted
+          disablePictureInPicture
+          disableRemotePlayback
+          playsInline
+          autoPlay
+          poster="./nft.png"
+        >
+          <source src="./nft.mp4" type="video/mp4" />
+        </video>
         <div className="flex justify-between w-full px-3 py-2 items-center">
           <div className="flex flex-col">
             <div className="small-medium-font">DAO SPACE #{tokenId}</div>
