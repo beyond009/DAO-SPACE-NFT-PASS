@@ -34,6 +34,36 @@ import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import "@rainbow-me/rainbowkit/styles.css";
 import { ethers } from "ethers";
+
+const avalancheChain: Chain = {
+  id: 43_114,
+  name: "Avalanche",
+  network: "avalanche",
+  nativeCurrency: {
+    decimals: 18,
+    name: "Avalanche",
+    symbol: "AVAX",
+  },
+  rpcUrls: {
+    default: "https://api.avax.network/ext/bc/C/rpc",
+  },
+  blockExplorers: {
+    default: { name: "SnowTrace", url: "https://snowtrace.io" },
+  },
+  testnet: false,
+};
+
+const { chains, provider } = configureChains(
+  [avalancheChain],
+  [
+    jsonRpcProvider({
+      rpc: (chain) => ({
+        http: `https://api.avax.network/ext/bc/C/rpc`,
+      }),
+    }),
+  ]
+);
+
 const MoonbeamNetwork: Chain = {
   id: 1284,
   name: "Moonbeam",
@@ -47,16 +77,7 @@ const MoonbeamNetwork: Chain = {
 const moonbeamProvider = new ethers.providers.JsonRpcProvider(
   `https://moonbeam.public.blastapi.io`
 );
-const { chains, provider } = configureChains(
-  [MoonbeamNetwork],
-  [
-    jsonRpcProvider({
-      rpc: (chain) => ({
-        http: `https://moonbeam.public.blastapi.io`,
-      }),
-    }),
-  ]
-);
+
 const { connectors } = getDefaultWallets({
   appName: "DAO SPACE NFT PASS",
   chains,

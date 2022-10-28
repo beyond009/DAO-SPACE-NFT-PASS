@@ -45,15 +45,29 @@ const MoonbeamNetwork: Chain = {
   },
   testnet: false,
 };
+const AvalancheProvider = new ethers.providers.JsonRpcProvider(
+  `https://api.avax.network/ext/bc/C/rpc`
+);
+const AvalancheNetwork: Chain = {
+  id: 43114,
+  name: "Avalanche",
+  network: "Avalanche",
+  nativeCurrency: { name: "AVAX", symbol: "AVAX", decimals: 18 },
+  rpcUrls: {
+    default: "https://api.avax.network/ext/bc/C/rpc",
+  },
+  testnet: false,
+};
 const moonbeamProvider = new ethers.providers.JsonRpcProvider(
   `https://moonbeam.public.blastapi.io`
 );
+
 const { chains, provider } = configureChains(
-  [MoonbeamNetwork],
+  [AvalancheNetwork],
   [
     jsonRpcProvider({
       rpc: (chain) => ({
-        http: `https://moonbeam.public.blastapi.io`,
+        http: `https://api.avax.network/ext/bc/C/rpc`,
       }),
     }),
   ]
