@@ -65,13 +65,13 @@ export const Card = ({ tokenId }: Props) => {
   const [visible, setVisible] = useState(false);
   const [message, setMessage] = useState("");
   const activated = useContractRead({
-    addressOrName: "0xce6685530FbA7cC34538149B2278e213Ce73FcDa",
+    addressOrName: "0x1c9CF0E5473914A0e705e8Cf0BdD3EfbbFe17E48",
     contractInterface: ERC721Interface,
     functionName: "activated",
     args: tokenId,
   });
   const expires = useContractRead({
-    addressOrName: "0xce6685530FbA7cC34538149B2278e213Ce73FcDa",
+    addressOrName: "0x1c9CF0E5473914A0e705e8Cf0BdD3EfbbFe17E48",
     contractInterface: ERC721Interface,
     functionName: "expires",
     args: tokenId,

@@ -96,7 +96,7 @@ const HomeWrap = (): JSX.Element => {
   const fetchNFT = async (address: string) => {
     console.log(address);
     const NFT = new ethers.Contract(
-      "0xce6685530fba7cc34538149b2278e213ce73fcda",
+      "0x1c9CF0E5473914A0e705e8Cf0BdD3EfbbFe17E48",
       ERC721Interface,
       provider
     );
