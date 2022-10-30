@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+Home/HomePage.tsximport React, { useState, useEffect } from "react";
 import { Gap } from "@/components";
 import ClickAwayListener from "@mui/base/ClickAwayListener";
 import styled from "styled-components";
@@ -9,6 +9,7 @@ import { ERC721Interface } from "@/ABI/ERC721";
 import { Modal } from "@/components/Common/Modal";
 const instance = axios.create({
   baseURL: "https://api.daospace.one",
+  // baseURL: "http://127.0.0.1:5000",
   timeout: 300000,
   headers: { "X-Custom-Header": "foobar" },
 });
@@ -65,13 +66,13 @@ export const Card = ({ tokenId }: Props) => {
   const [visible, setVisible] = useState(false);
   const [message, setMessage] = useState("");
   const activated = useContractRead({
-    addressOrName: "0x1c9CF0E5473914A0e705e8Cf0BdD3EfbbFe17E48",
+    addressOrName: "0xF94AEc47Decd15655755b4feb0D7399b7fEE3145",
     contractInterface: ERC721Interface,
     functionName: "activated",
     args: tokenId,
   });
   const expires = useContractRead({
-    addressOrName: "0x1c9CF0E5473914A0e705e8Cf0BdD3EfbbFe17E48",
+    addressOrName: "0xF94AEc47Decd15655755b4feb0D7399b7fEE3145",
     contractInterface: ERC721Interface,
     functionName: "expires",
     args: tokenId,

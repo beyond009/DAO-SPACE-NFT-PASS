@@ -86,17 +86,17 @@ const HomeWrap = (): JSX.Element => {
 
   const balanceOf = () => {
     const { data, isFetching } = useContractRead({
-      addressOrName: "0xce6685530FbA7cC34538149B2278e213Ce73FcDa",
+      addressOrName: "0xF94AEc47Decd15655755b4feb0D7399b7fEE3145",
       contractInterface: ERC721Interface,
       functionName: "balanceOf",
-      args: "0x1c9CF0E5473914A0e705e8Cf0BdD3EfbbFe17E48",
+      args: address,
     });
     return data;
   };
   const fetchNFT = async (address: string) => {
     console.log(address);
     const NFT = new ethers.Contract(
-      "0x1c9CF0E5473914A0e705e8Cf0BdD3EfbbFe17E48",
+      "0xF94AEc47Decd15655755b4feb0D7399b7fEE3145",
       ERC721Interface,
       provider
     );
