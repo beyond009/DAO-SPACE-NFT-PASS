@@ -1,4 +1,4 @@
-Home/HomePage.tsximport React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Gap } from "@/components";
 import ClickAwayListener from "@mui/base/ClickAwayListener";
 import styled from "styled-components";
